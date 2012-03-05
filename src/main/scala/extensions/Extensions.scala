@@ -26,6 +26,7 @@ import play.api.PlayException
 import play.api.mvc.{JavascriptLitteral, PathBindable}
 import play.api.data.format.Formatter
 import play.api.data.FormError
+import play.api.http.{ContentTypes, HeaderNames}
 
 /**
  * Framework extensions
@@ -35,7 +36,7 @@ import play.api.data.FormError
 
 trait Extensions {
 
-  def Json(data: AnyRef, status: Int = 200) = Status(status)(JJson.generate(data)).as("application/json")
+  def Json(data: AnyRef, status: Int = 200) = Status(status)(JJson.generate(data)).as(ContentTypes.JSON)
 
   implicit def objectIdFormat: Formatter[ObjectId] = new Formatter[ObjectId] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
