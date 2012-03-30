@@ -14,7 +14,7 @@ import eu.delving.templates.GroovyTemplatesPlugin
 private[extensions] case class MailBuilder(subject: String, content: String = "", from: String, to: Seq[String] = Seq.empty, bcc: Seq[String] = Seq.empty) {
 
   val hostName = current.configuration.getString("mail.smtp.host").getOrElse("")
-  val smtpPort = current.configuration.getInt("mail.smtp.port").getOrElse(587)
+  val smtpPort = current.configuration.getInt("mail.smtp.port").getOrElse(25)
   val mailerType = current.configuration.getString("mail.smtp.type").getOrElse("mock")
 
 
@@ -22,7 +22,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
   def bcc(bcc: String*): MailBuilder = this.copy(bcc = this.bcc ++ bcc)
 
   def withContent(content: String) = this.copy(content = content)
-  def withTemplate(name: String, args: (Symbol, AnyRef)*) = this.copy(content = renderMailTemplate(name, args.map(e => (e._1.name, e._2)).toMap))
+  def withTemplate(name: String, lang: String, args: (Symbol, AnyRef)*) = this.copy(content = renderMailTemplate(name, args.map(e => (e._1.name, e._2)).toMap + ("lang" -> lang)))
 
   def send() {
 
