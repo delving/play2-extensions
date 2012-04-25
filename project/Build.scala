@@ -30,7 +30,9 @@ object Build extends Build {
 
       resolvers += "scala-tools" at "http://scala-tools.org/repo-releases/",
 
-      resolvers += "novus" at "http://repo.novus.com/snapshots/",
+      resolvers +="repo.novus rels" at "http://repo.novus.com/releases/",
+
+      resolvers += "repo.novus snaps" at "http://repo.novus.com/snapshots/",
 
       resolvers += delvingReleases,
 
