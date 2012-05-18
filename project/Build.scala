@@ -11,7 +11,7 @@ object Build extends Build {
 
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.0",
-    "eu.delving"           %%    "groovy-templates-plugin"     % "1.1",
+    "eu.delving"           %%    "groovy-templates-plugin"     % "1.2-SNAPSHOT",
     "com.mongodb.casbah"   %%    "casbah"                      % "2.1.5-1",
     "com.novus"            %%    "salat-core"                  % "0.0.8-SNAPSHOT",
     "org.joda"             %     "joda-convert"                % "1.2",
