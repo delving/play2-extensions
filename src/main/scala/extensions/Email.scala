@@ -42,7 +42,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
 
       """.format(from, to.mkString(", "), bcc.mkString(", "), subject, content)
 
-      Logger("CultureHub").info(mail)
+      Logger("Email").info(mail)
 
     } else {
 
