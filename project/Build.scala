@@ -3,7 +3,7 @@ import Keys._
 
 object Build extends Build {
 
-  val buildVersion = "1.3.2"
+  val buildVersion = "1.3.3"
 
   val delvingReleases = "Delving Releases Repository" at "http://development.delving.org:8081/nexus/content/repositories/releases"
   val delvingSnapshots = "Delving Snapshot Repository" at "http://development.delving.org:8081/nexus/content/repositories/snapshots"
@@ -12,8 +12,7 @@ object Build extends Build {
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.0.3",
     "eu.delving"           %%    "groovy-templates-plugin"     % "1.5.2",
-    "com.mongodb.casbah"   %%    "casbah"                      % "2.1.5-1",
-    "com.novus"            %%    "salat-core"                  % "0.0.8",
+    "com.novus"            %%    "salat-core"                  % "1.9.1",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
     "commons-httpclient"   %     "commons-httpclient"          % "3.1",
@@ -28,16 +27,10 @@ object Build extends Build {
 
       version := buildVersion,
 
-      resolvers += "scala-tools" at "http://scala-tools.org/repo-releases/",
-
       resolvers +="repo.novus rels" at "http://repo.novus.com/releases/",
-
       resolvers += "repo.novus snaps" at "http://repo.novus.com/snapshots/",
-
       resolvers += Resolver.file("local-ivy-repo", file(Path.userHome + "/.ivy2/local"))(Resolver.ivyStylePatterns),
-
       resolvers += delvingReleases,
-
       resolvers += delvingSnapshots,
 
       libraryDependencies ++= dependencies,
