@@ -3,7 +3,7 @@ import Keys._
 
 object Build extends Build {
 
-  val buildVersion = "1.3.3"
+  val buildVersion = "1.3.4-SNAPSHOT"
 
   val delvingReleases = "Delving Releases Repository" at "http://development.delving.org:8081/nexus/content/repositories/releases"
   val delvingSnapshots = "Delving Snapshot Repository" at "http://development.delving.org:8081/nexus/content/repositories/snapshots"
@@ -11,7 +11,7 @@ object Build extends Build {
 
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.0.3",
-    "eu.delving"           %%    "groovy-templates-plugin"     % "1.5.2",
+    "eu.delving"           %%    "groovy-templates-plugin"     % "1.5.3-SNAPSHOT",
     "com.novus"            %%    "salat-core"                  % "1.9.1",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
