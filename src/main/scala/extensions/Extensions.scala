@@ -79,7 +79,7 @@ object Formatters {
 
 object Binders {
 
-  implicit def bindableObjectId = new PathBindable[ObjectId] {
+  implicit object ObjectIdBinder extends PathBindable[ObjectId] {
     def bind(key: String, value: String) = {
       if (ObjectId.isValid(value)) {
         Right(new ObjectId(value))
@@ -90,7 +90,7 @@ object Binders {
 
     def unbind(key: String, value: ObjectId) = value.toString
   }
-  
+
   implicit def bindableJavascriptLitteral = new JavascriptLitteral[ObjectId] {
     def to(value: ObjectId) = value.toString
   }
@@ -123,9 +123,9 @@ class ObjectIdDeserializer extends JsonDeserializer[ObjectId] {
 // ~~~ Exceptions
 
 object ProgrammerException {
-  def apply(message: String) = PlayException("Programmer Exception", message)
+  def apply(message: String) = new PlayException("Programmer Exception", message)
 }
 
 object ConfigurationException {
-  def apply(message: String) = PlayException("Configuration Exception", message)
+  def apply(message: String) = new PlayException("Configuration Exception", message)
 }
