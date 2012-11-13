@@ -43,6 +43,7 @@ trait Extensions {
       case Some(oid) if ObjectId.isValid(oid) => Some(new ObjectId(oid)).toRight(Seq(FormError(key, "error.objectId", Nil)))
       case _ => Left(Seq(FormError(key, "error.objectId", Nil)))
     }
+
     def unbind(key: String, value: ObjectId) = Map(key -> value.toString)
   }
 
@@ -50,12 +51,13 @@ trait Extensions {
 }
 
 object Formatters {
-  
+
   implicit def objectIdFormat: Formatter[ObjectId] = new Formatter[ObjectId] {
     def bind(key: String, data: Map[String, String]) = data.get(key) match {
       case Some(oid) if ObjectId.isValid(oid) => Some(new ObjectId(oid)).toRight(Seq(FormError(key, "error.objectId", Nil)))
       case _ => Left(Seq(FormError(key, "error.objectId", Nil)))
     }
+
     def unbind(key: String, value: ObjectId) = Map(key -> value.toString)
   }
 
@@ -67,19 +69,26 @@ object Formatters {
 
       val bound: Map[String, String] = data.filter(t => MapKey.findFirstIn(t._1).isDefined).map(_._1).collect {
         case MapKey(mapKey) => (mapKey, data.get(key + "[" + mapKey + "]").getOrElse(Left(Seq(FormError(key, "Cannot retrieve value with key %s, map values %s".format(key + "[" + mapKey + "]", data.toString()), Nil)))).toString)
-        }.toMap[String, String]
+      }.toMap[String, String]
 
       Right(bound)
     }
-    
-    def unbind(key: String, value: Map[String, String]) = value.map(t => (key + "[" + t._1 + "]" -> t._2 ))
+
+    def unbind(key: String, value: Map[String, String]) = value.map(t => (key + "[" + t._1 + "]" -> t._2))
   }
-  
+
 }
 
 object Binders {
 
-  implicit object ObjectIdBinder extends PathBindable[ObjectId] {
+  implicit def bindableOption[T: PathBindable] = new PathBindable[Option[T]] {
+    def bind(key: String, value: String) = {
+      implicitly[PathBindable[T]].bind(key, value).right.map(Some(_))
+    }
+    def unbind(key: String, value: Option[T]) = value.map(v => implicitly[PathBindable[T]].unbind(key, v)).getOrElse("")
+  }
+
+  implicit def bindableObjectId = new PathBindable[ObjectId] {
     def bind(key: String, value: String) = {
       if (ObjectId.isValid(value)) {
         Right(new ObjectId(value))
