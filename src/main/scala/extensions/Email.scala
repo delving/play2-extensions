@@ -11,7 +11,7 @@ import eu.delving.templates.GroovyTemplatesPlugin
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
 
-private[extensions] case class MailBuilder(subject: String, content: String = "", from: String, to: Seq[String] = Seq.empty, bcc: Seq[String] = Seq.empty) {
+private[extensions] case class MailBuilder(subject: String, content: String = "", from: String, to: Seq[String] = Seq.empty, bcc: Seq[String] = Seq.empty, cc: Seq[String] = Seq.empty) {
 
   val hostName = current.configuration.getString("mail.smtp.host").getOrElse("")
   val smtpPort = current.configuration.getInt("mail.smtp.port").getOrElse(25)
@@ -19,6 +19,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
 
 
   def to(to: String*): MailBuilder = this.copy(to = this.to ++ to)
+  def cc(cc: String*): MailBuilder = this.copy(cc = this.cc ++ cc)
   def bcc(bcc: String*): MailBuilder = this.copy(bcc = this.bcc ++ bcc)
 
   def withContent(content: String) = this.copy(content = content)
@@ -33,6 +34,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
       ~~~~ Mock mailer ~~~~~
       Mail from: %s
       Mail to:   %s
+      Mail CC:   %s
       BCC:       %s
 
       Subject:   %s
@@ -40,7 +42,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
       %s
       ~~~~~~~~~~~~~~~~~~~~~~
 
-      """.format(from, to.mkString(", "), bcc.mkString(", "), subject, content)
+      """.format(from, to.mkString(", "), cc.mkString(", "), bcc.mkString(", "), subject, content)
 
       Logger("Email").info(mail)
 
@@ -51,6 +53,7 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
       email.setSmtpPort(smtpPort)
       email.setFrom(from)
       to foreach(email.addTo(_))
+      cc foreach(email.addCc(_))
       bcc foreach(email.addBcc(_))
       email.setSubject(subject)
       email.setMsg(content)
