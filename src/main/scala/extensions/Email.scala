@@ -3,10 +3,11 @@ package extensions
 import org.apache.commons.mail.SimpleEmail
 import play.api.Logger
 import play.api.Play.current
-import eu.delving.templates.GroovyTemplatesPlugin
 
 /**
  * Email sending
+ *
+ * TODO consider replacing this with one of the Typesafe-maintained libraries
  *
  * @author Manuel Bernhardt <bernhardt.manuel@gmail.com>
  */
@@ -23,7 +24,6 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
   def bcc(bcc: String*): MailBuilder = this.copy(bcc = this.bcc ++ bcc)
 
   def withContent(content: String) = this.copy(content = content)
-  def withTemplate(name: String, lang: String, args: (Symbol, AnyRef)*) = this.copy(content = renderMailTemplate(name, args.map(e => (e._1.name, e._2)).toMap + ("lang" -> lang)))
 
   def send() {
 
@@ -61,14 +61,6 @@ private[extensions] case class MailBuilder(subject: String, content: String = ""
       email.send()
     }
 
-
-  }
-
-  private def renderMailTemplate(name: String, args: Map[String, AnyRef]) = {
-    current.plugin[GroovyTemplatesPlugin].map(_.renderTemplate(name, args)).getOrElse(Right("")).fold(
-      left => throw(left),
-      right => right
-    )
   }
 
 }
