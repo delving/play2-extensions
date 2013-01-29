@@ -17,16 +17,15 @@ package extensions
  */
 
 import org.bson.types.ObjectId
-import org.codehaus.jackson.map.annotate.JsonCachable
-import org.codehaus.jackson.map.module.SimpleModule
-import org.codehaus.jackson.map.{JsonSerializer, SerializerProvider, JsonDeserializer, DeserializationContext}
-import org.codehaus.jackson.{Version, JsonGenerator, JsonParser}
 import play.api.mvc.Results.Status
 import play.api.mvc.{JavascriptLitteral, PathBindable}
 import play.api.data.format.Formatter
 import play.api.data.FormError
-import play.api.http.{ContentTypes, HeaderNames}
+import play.api.http.ContentTypes
 import play.api.{Play, PlayException}
+import net.liftweb.json._
+import net.liftweb.json.Serialization.{read, write}
+import reflect.Manifest
 
 /**
  * Framework extensions
@@ -106,28 +105,32 @@ object Binders {
 
 }
 
-object JJson extends com.codahale.jerkson.Json {
+object JJson {
 
-  override protected val classLoader: ClassLoader = Play.current.classloader
-  val module = new SimpleModule("JerksonJson", Version.unknownVersion())
-  module.addSerializer(classOf[ObjectId], new ObjectIdSerializer)
-  module.addDeserializer(classOf[ObjectId], new ObjectIdDeserializer)
-  mapper.registerModule(module)
+  implicit val formats = DefaultFormats + new ObjectIdSerializer
+
+  def generate[A <: AnyRef](a: A) = write(a)
+
+  def parse[A](json: String)(implicit mf: Manifest[A]) = read[A](json)
+
 }
 
-@JsonCachable
-class ObjectIdSerializer extends JsonSerializer[ObjectId] {
-  def serialize(id: ObjectId, json: JsonGenerator, provider: SerializerProvider) {
-    json.writeString(id.toString)
+class ObjectIdSerializer extends Serializer[ObjectId] {
+    private val Class = classOf[ObjectId]
+
+    def deserialize(implicit format: Formats) = {
+      case (TypeInfo(Class, _), json) => json match {
+        case JObject(JField("id", JString(s)) :: Nil) if ObjectId.isValid(s) => new ObjectId(s)
+        case x => throw new MappingException("Can't convert " + x + " to ObjectId")
+      }
+    }
+
+    def serialize(implicit format: Formats) = {
+      case x: ObjectId => JString(x.toString)
+    }
   }
-}
 
-class ObjectIdDeserializer extends JsonDeserializer[ObjectId] {
-  def deserialize(jp: JsonParser, context: DeserializationContext) = {
-    if (!ObjectId.isValid(jp.getText)) throw context.mappingException("invalid ObjectId " + jp.getText)
-    new ObjectId(jp.getText)
-  }
-}
+
 
 // ~~~ Exceptions
 

@@ -12,8 +12,10 @@ object Build extends Build {
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.1-SNAPSHOT" % "provided",
     "eu.delving"           %%    "groovy-templates-plugin"     % "1.6-SNAPSHOT",
-    "com.novus"            %     "salat-core_2.9.2"            % "1.9.1",
-    "com.codahale"         %     "jerkson_2.9.1"               % "0.5.0",
+    "com.novus"            %%    "salat-core"                  % "1.9.2-SNAPSHOT",
+    "org.mongodb"          %%    "casbah-gridfs"               % "2.5.0",
+    "org.mongodb"          %%    "casbah-query"                % "2.5.0",
+    "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
     "commons-httpclient"   %     "commons-httpclient"          % "3.1",
@@ -28,11 +30,9 @@ object Build extends Build {
 
       version := buildVersion,
 
-      scalaVersion := "2.10.0-RC1",
+      scalaVersion := "2.10.0",
 
-      resolvers +="repo.novus rels" at "http://repo.novus.com/releases/",
-      resolvers += "repo.novus snaps" at "http://repo.novus.com/snapshots/",
-      resolvers += "repo.codahale" at "http://repo.codahale.com",
+      resolvers += "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
       resolvers += Resolver.file("local-ivy-repo", file(Path.userHome + "/.ivy2/local"))(Resolver.ivyStylePatterns),
       resolvers += delvingReleases,
       resolvers += delvingSnapshots,

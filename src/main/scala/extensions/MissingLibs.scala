@@ -23,7 +23,7 @@ object MissingLibs {
       properties.load(is)
       is.close()
     } catch {
-      case e => throw new RuntimeException(e)
+      case e: Throwable => throw new RuntimeException(e)
     }
     properties
   }
@@ -39,14 +39,14 @@ object MissingLibs {
    */
   def readContentAsString(is: InputStream, encoding: String) = {
     try {
-      IOUtils.toString(is, encoding);
+      IOUtils.toString(is, encoding)
     } catch {
-      case e => throw new RuntimeException(e);
+      case e: Throwable => throw new RuntimeException(e)
     } finally {
       try {
-        is.close();
+        is.close()
       } catch {
-        case _ => //
+        case e: Throwable => //
       }
     }
   }
@@ -61,7 +61,7 @@ object MissingLibs {
     try {
       new String(Base64.encodeBase64(value.getBytes("utf-8")))
     } catch {
-      case e => throw UnexpectedException(unexpected = Some(e))
+      case e: Throwable => throw UnexpectedException(unexpected = Some(e))
     }
   }
 
@@ -72,13 +72,13 @@ object MissingLibs {
    */
   def hexMD5(value: String) = {
     try {
-      val messageDigest = MessageDigest.getInstance("MD5");
-      messageDigest.reset();
-      messageDigest.update(value.getBytes("utf-8"));
-      val digest = messageDigest.digest();
-      byteToHexString(digest);
+      val messageDigest = MessageDigest.getInstance("MD5")
+      messageDigest.reset()
+      messageDigest.update(value.getBytes("utf-8"))
+      val digest = messageDigest.digest()
+      byteToHexString(digest)
     } catch {
-      case ex => throw new UnexpectedException(Some(ex.getMessage));
+      case ex: Throwable => throw new UnexpectedException(Some(ex.getMessage))
     }
   }
 
@@ -97,11 +97,11 @@ object MissingLibs {
 
   def passwordHash(input: String, hashType: HashType.Value) = {
     try {
-      val m = MessageDigest.getInstance(hashType.toString);
-      val out = m.digest(input.getBytes);
-      new String(Base64.encodeBase64(out));
+      val m = MessageDigest.getInstance(hashType.toString)
+      val out = m.digest(input.getBytes)
+      new String(Base64.encodeBase64(out))
     } catch {
-      case e: NoSuchAlgorithmException => throw new RuntimeException(e);
+      case e: NoSuchAlgorithmException => throw new RuntimeException(e)
     }
   }
 
@@ -111,10 +111,10 @@ object MissingLibs {
 
   def getHttpDateFormatter = {
     if (httpFormatter.get() == null) {
-      httpFormatter.set(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US));
-      httpFormatter.get().setTimeZone(TimeZone.getTimeZone("GMT"));
+      httpFormatter.set(new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US))
+      httpFormatter.get().setTimeZone(TimeZone.getTimeZone("GMT"))
     }
-    httpFormatter.get();
+    httpFormatter.get()
   }
 
 
