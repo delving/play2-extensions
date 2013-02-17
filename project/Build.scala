@@ -10,11 +10,10 @@ object Build extends Build {
   val delvingRepository = if(buildVersion.endsWith("SNAPSHOT")) delvingSnapshots else delvingReleases
 
   val dependencies = Seq(
-    "play"                 %%    "play"                        % "2.1-SNAPSHOT" % "provided",
+    "play"                 %%    "play"                        % "2.1.0" % "provided",
     "eu.delving"           %%    "groovy-templates-plugin"     % "1.6-SNAPSHOT",
-    "com.novus"            %%    "salat-core"                  % "1.9.2-SNAPSHOT",
-    "org.mongodb"          %%    "casbah-gridfs"               % "2.5.0",
-    "org.mongodb"          %%    "casbah-query"                % "2.5.0",
+    "com.novus"            %%    "salat"                       % "1.9.2-SNAPSHOT",
+    "org.mongodb"          %%    "casbah"                      % "2.5.0",
     "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
