@@ -43,7 +43,7 @@ trait MongoContext {
     val connection = MongoConnection()
     connections += connection
     connection(connectionName)
-  } else if (mongoServerAddresses.isEmpty || mongoServerAddresses.size > 2) {
+  } else if (!mongoServerAddresses.isEmpty || mongoServerAddresses.size > 1) {
     logger.info("Starting Mongo in Replicaset Mode connecting to %s".format(mongoServerAddresses.mkString(", ")))
     val connection = MongoConnection(mongoServerAddresses, mongoOptions)
     connections += connection
