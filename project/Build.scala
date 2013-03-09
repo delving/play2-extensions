@@ -3,15 +3,15 @@ import Keys._
 
 object Build extends Build {
 
-  val buildVersion = "1.4-SNAPSHOT"
+  val buildVersion = "1.5-SNAPSHOT"
 
-  val delvingReleases = "Delving Releases Repository" at "http://development.delving.org:8081/nexus/content/repositories/releases"
-  val delvingSnapshots = "Delving Snapshot Repository" at "http://development.delving.org:8081/nexus/content/repositories/snapshots"
+  val delvingReleases = "Delving Releases Repository" at "http://nexus.delving.org/nexus/content/repositories/releases"
+  val delvingSnapshots = "Delving Snapshot Repository" at "http://nexus.delving.org/nexus/content/repositories/snapshots"
   val delvingRepository = if(buildVersion.endsWith("SNAPSHOT")) delvingSnapshots else delvingReleases
 
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.1.0" % "provided",
-    "eu.delving"           %%    "groovy-templates-plugin"     % "1.6-SNAPSHOT",
+    "eu.delving"           %%    "groovy-templates-plugin"     % "1.6.2-SNAPSHOT",
     "com.novus"            %%    "salat"                       % "1.9.2-SNAPSHOT",
     "org.mongodb"          %%    "casbah"                      % "2.5.0",
     "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
