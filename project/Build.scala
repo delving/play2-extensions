@@ -13,7 +13,6 @@ object Build extends Build {
     "play"                 %%    "play"                        % "2.1.0" % "provided",
     "eu.delving"           %%    "groovy-templates-plugin"     % "1.6.2-SNAPSHOT",
     "com.novus"            %%    "salat"                       % "1.9.2-SNAPSHOT",
-    "org.mongodb"          %%    "casbah"                      % "2.5.0",
     "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
