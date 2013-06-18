@@ -13,6 +13,7 @@ object Build extends Build {
     "play"                 %%    "play"                        % "2.1.0" % "provided",
     "eu.delving"           %%    "groovy-templates-plugin"     % "1.6.2-SNAPSHOT",
     "com.novus"            %%    "salat"                       % "1.9.2-SNAPSHOT",
+    "org.mongodb"          %%    "casbah-gridfs"               % "2.6.1",
     "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
     "org.joda"             %     "joda-convert"                % "1.2",
     "commons-collections"  %     "commons-collections"         % "3.2.1",
@@ -30,6 +31,8 @@ object Build extends Build {
 
       scalaVersion := "2.10.0",
 
+      resolvers += "Typesafe Repo" at "http://repo.typesafe.com/typesafe/releases/",
+      resolvers += "sonatype releases" at "http://oss.sonatype.org/content/repositories/releases/",
       resolvers += "sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots",
       resolvers += Resolver.file("local-ivy-repo", file(Path.userHome + "/.ivy2/local"))(Resolver.ivyStylePatterns),
       resolvers += delvingReleases,

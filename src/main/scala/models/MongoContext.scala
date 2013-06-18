@@ -38,21 +38,23 @@ trait MongoContext {
   val connectionsPerHost = current.configuration.getInt("mongo.connectionsPerHost").getOrElse(10)
   val mongoOptions = MongoOptions(connectionsPerHost = connectionsPerHost.toInt)
 
-  def createConnection(connectionName: String): MongoDB  = if (current.configuration.getBoolean("mongo.test.context").getOrElse(true) || Play.isDev) {
-    logger.info("Starting Mongo in Test Mode connecting to localhost:27017 to database %s".format(connectionName))
+  def createConnection(databaseName: String): MongoDB = makeConnection(databaseName)._1
+
+  def makeConnection(databaseName: String): (MongoDB, MongoConnection) = if (current.configuration.getBoolean("mongo.test.context").getOrElse(true) || Play.isDev) {
+    logger.info("Starting Mongo in Test Mode connecting to localhost:27017 to database %s".format(databaseName))
     val connection = MongoConnection()
     connections += connection
-    connection(connectionName)
+    (connection(databaseName), connection)
   } else if (!mongoServerAddresses.isEmpty || mongoServerAddresses.size > 1) {
     logger.info("Starting Mongo in Replicaset Mode connecting to %s".format(mongoServerAddresses.mkString(", ")))
     val connection = MongoConnection(mongoServerAddresses, mongoOptions)
     connections += connection
-    connection(connectionName)
+    (connection(databaseName), connection)
   } else {
     logger.info("Starting Mongo in Single Target Mode connecting to %s".format(mongoServerAddresses.head.toString))
     val connection = MongoConnection(mongoServerAddresses.head, mongoOptions)
     connections += connection
-    connection(connectionName)
+    (connection(databaseName), connection)
   }
 
   def close() {
