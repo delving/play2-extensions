@@ -3,7 +3,7 @@ import Keys._
 
 object Build extends Build {
 
-  val buildVersion = "1.5-SNAPSHOT"
+  val buildVersion = "1.5"
 
   val delvingReleases = "Delving Releases Repository" at "http://nexus.delving.org/nexus/content/repositories/releases"
   val delvingSnapshots = "Delving Snapshot Repository" at "http://nexus.delving.org/nexus/content/repositories/snapshots"
@@ -11,8 +11,8 @@ object Build extends Build {
 
   val dependencies = Seq(
     "play"                 %%    "play"                        % "2.1.0" % "provided",
-    "eu.delving"           %%    "groovy-templates-plugin"     % "1.6.2-SNAPSHOT",
-    "com.novus"            %%    "salat"                       % "1.9.2-SNAPSHOT",
+    "eu.delving"           %%    "groovy-templates-plugin"     % "1.6.2",
+    "com.novus"            %%    "salat"                       % "1.9.2",
     "org.mongodb"          %%    "casbah-gridfs"               % "2.6.1",
     "net.liftweb"          %%    "lift-json"                   % "2.5-M4",
     "org.joda"             %     "joda-convert"                % "1.2",
@@ -20,7 +20,7 @@ object Build extends Build {
     "commons-httpclient"   %     "commons-httpclient"          % "3.1",
     "commons-io"           %     "commons-io"                  % "2.1",
     "org.apache.commons"   %     "commons-email"               % "1.2",
-    "commons-lang"         %     "commons-lang"                % "2.6"  )
+    "commons-lang"         %     "commons-lang"                % "2.6")
 
   val main = Project(
     id = "play2-extensions",
